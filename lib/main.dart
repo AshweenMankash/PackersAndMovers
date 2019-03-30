@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,13 +36,64 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Completer<GoogleMapController> _controller = Completer();
+
+  static const  _center = const LatLng(50.0, 100.0);
+
+  void _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       top: true,
       child: Scaffold(
-        appBar: AppBar(
-          title: Text("Hello"),
+//        appBar: AppBar(
+//          backgroundColor: Colors.black87,
+//          elevation: 0.0,
+//          centerTitle: true,
+//          title: Text("shyft",style: TextStyle(color: Colors.white),),
+//        ),
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                height: MediaQuery.of(context).size.height,
+//              width: 100.0,
+                child:GoogleMap(
+                  onMapCreated: _onMapCreated,
+                  initialCameraPosition: CameraPosition(
+                    target: _center,
+                    zoom: 7.0,
+                  ),
+                  mapType: MapType.normal,
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      height: 60.0,
+                      width: MediaQuery.of(context).size.width,
+                      alignment: Alignment.center,
+                      color: Colors.black,
+                      child: Text("SHYFT",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                    ),
+                    Center(child: RaisedButton(onPressed: (){
+                      setState(() {
+
+                      });
+                    },child: Text("Hello"),),)
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
