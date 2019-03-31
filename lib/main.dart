@@ -36,6 +36,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var labelStyle = TextStyle(fontWeight: FontWeight.bold);
+
+
   Completer<GoogleMapController> _controller = Completer();
 
   static const  _center = const LatLng(50.0, 100.0);
@@ -84,11 +87,35 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Colors.black,
                       child: Text("SHYFT",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
                     ),
-                    Center(child: RaisedButton(onPressed: (){
-                      setState(() {
-
-                      });
-                    },child: Text("Hello"),),)
+                    Container(
+                      color: Colors.white,
+                      width: MediaQuery.of(context).size.width,
+                        margin: EdgeInsets.all(20.0),
+                        padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  labelText: "Enter Pickup Location",
+                                  labelStyle: labelStyle,
+                                  helperText: "Ex: Gurgaon"
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: TextField(
+                              decoration: InputDecoration(
+                                  labelText: "Enter Drop Location",
+                                labelStyle: labelStyle,
+                                helperText: "Ex: Mumbai"
+                              ),
+                            ),
+                          )
+                        ],
+                      ))
                   ],
                 ),
               )
