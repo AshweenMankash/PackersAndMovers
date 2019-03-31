@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shyft_packers_and_movers/Widgets/HomePage.dart';
+import 'package:shyft_packers_and_movers/Widgets/PickDropWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,6 +12,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MaterialApp(
       title: 'shyft',
       theme: ThemeData(
@@ -21,7 +28,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
@@ -29,19 +36,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var labelStyle = TextStyle(fontWeight: FontWeight.bold);
-
 
   Completer<GoogleMapController> _controller = Completer();
 
-  static const  _center = const LatLng(50.0, 100.0);
+  static const _center = const LatLng(50.0, 120.0);
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -52,76 +56,31 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       top: true,
       child: Scaffold(
-//        appBar: AppBar(
-//          backgroundColor: Colors.black87,
-//          elevation: 0.0,
-//          centerTitle: true,
-//          title: Text("shyft",style: TextStyle(color: Colors.white),),
-//        ),
-        body: SafeArea(
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: MediaQuery.of(context).size.height,
-//              width: 100.0,
-                child:GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(
-                    target: _center,
-                    zoom: 7.0,
-                  ),
-                  mapType: MapType.normal,
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
+                appBar: AppBar(
+          backgroundColor: Colors.black87,
+          elevation: 1.0,
+          centerTitle: true,
+          title: Text("SHYFT",style: TextStyle(color: Colors.white,letterSpacing: 2.5,fontWeight: FontWeight.bold),),
+        ),
 
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      height: 60.0,
-                      width: MediaQuery.of(context).size.width,
-                      alignment: Alignment.center,
-                      color: Colors.black,
-                      child: Text("SHYFT",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                    ),
-                    Container(
-                      color: Colors.white,
-                      width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.all(20.0),
-                        padding: EdgeInsets.all(20.0),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  labelText: "Enter Pickup Location",
-                                  labelStyle: labelStyle,
-                                  helperText: "Ex: Gurgaon"
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(18.0),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                  labelText: "Enter Drop Location",
-                                labelStyle: labelStyle,
-                                helperText: "Ex: Mumbai"
-                              ),
-                            ),
-                          )
-                        ],
-                      ))
-                  ],
-                ),
-              )
-            ],
+      body: SafeArea(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: HomePageWidget(),
           ),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: 0,
+            onTap: (selectedPage) {},
+            items: [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite), title: Text("Your Orders")),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), title: Text("Profile")),
+            ]
+        ),
+        resizeToAvoidBottomPadding: false,
       ),
     );
   }
