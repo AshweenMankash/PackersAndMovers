@@ -92,7 +92,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                        children: <Widget>[
                          Padding(
-                           padding: const EdgeInsets.only(left:10.0),
+                           padding: const EdgeInsets.only(left:30.0),
                            child: Text("Select a good time for survey?",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54),),
                          ),
                          Padding(
@@ -118,7 +118,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
               ],
             ),
           ),
-        ),floatingActionButton: FloatingActionButton.extended(onPressed: (){}, icon: Icon(Icons.check), label: Text("Request Movers")),
+        ),floatingActionButton: FloatingActionButton.extended(onPressed: (){}, icon: Icon(Icons.check), label: Text("Request Movers"),),
       ),
     );
   }
