@@ -23,48 +23,72 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   color: Colors.black54),
             ),
           ),
-          Column(
+          Flex(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               InkWell(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(50.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Moving Home",
-                        style: TextStyle(fontSize: 25.0),
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height*0.2,
+                        child: Image.network("https://upload.wikimedia.org/wikipedia/commons/5/53/Les_deux_amis_ayant_aid%C3%A9_%C3%A0_l%27emm%C3%A9nagement_du_troisi%C3%A8me.jpg",fit: BoxFit.cover,),
                       ),
-                      Icon(Icons.navigate_next)
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Container(
+                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height*0.2,
+                        padding: EdgeInsets.all(20.0),
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          "Moving Home",
+                          style: TextStyle(fontSize: 25.0,color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (ctx)=>MovingHomesWidget()));
                 },
               ),
-              Divider(),
+
               InkWell(
                 enableFeedback: true,
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(50.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text(
-                        "Warehousing",
-                        style: TextStyle(fontSize: 25.0),
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height*0.2,
+                        child: Image.network("https://media.defense.gov/2016/Dec/01/2001673857/600/400/0/161022-A-GP059-001.JPG",fit: BoxFit.cover,),
                       ),
-                      Icon(Icons.navigate_next)
-                    ],
-                  ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Container(
+                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height*0.2,
+                        padding: EdgeInsets.all(20.0),
+                        alignment: Alignment.bottomRight,
+                        child: Text(
+                          "Warehousing",
+                          style: TextStyle(fontSize: 25.0,color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 onTap: () {},
               )
-            ],
+            ], direction: Axis.vertical,
           )
         ],
       ),

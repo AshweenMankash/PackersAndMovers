@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 class PickDropWidget extends StatefulWidget {
+  final title;
+
+  const PickDropWidget({Key key, this.title}) : super(key: key);
   @override
   _PickDropWidgetState createState() => _PickDropWidgetState();
 }
 
 class _PickDropWidgetState extends State<PickDropWidget> {
   var labelStyle =
-  TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.normal);
+  TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.normal,fontSize: 15.0);
 
   @override
   Widget build(BuildContext context) {
@@ -17,22 +20,21 @@ class _PickDropWidgetState extends State<PickDropWidget> {
 
         Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
+                borderRadius: BorderRadius.circular(10.0),
                 color: Colors.white),
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.all(20.0),
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
 
                 Padding(
-                  padding: const EdgeInsets.all(18.0),
+                  padding: const EdgeInsets.only(left:15.0,right:15.0),
                   child: TextField(
                     decoration: InputDecoration(
-                        labelText: "Enter Drop Location",
+                        labelText: this.widget.title,
                         labelStyle: labelStyle,
-                        helperText: "Ex: Mumbai"),
+                        helperText: "Ex: House No.8, West Delhi, Delhi"),
                   ),
                 ),
               ],

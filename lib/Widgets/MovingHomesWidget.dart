@@ -28,52 +28,97 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                 fontWeight: FontWeight.bold),
           ),
         ),
-        body: Stack(
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          height: MediaQuery.of(context).size.height*0.8,
+          padding: EdgeInsets.all(20.0),
+          color: Colors.white,
+          child: Material(
+            color: Colors.white,
+            shape: SuperellipseShape(borderRadius: BorderRadius.circular(50.0)),
+            elevation: 2.0,
+            child: Stack(
               children: <Widget>[
-                progress == 0 ? PickDropWidget() : Container(),
-                progress == 0 ? InfoWidget("**Shyft can only pick up from Delhi/Ncr region") : Container(),
-                progress == 1 ? InfoWidget("Enter Dates") : Container(),
-                progress == 1 ? Calendar(
-                        onDateSelected: (date) {},
-                        showCalendarPickerIcon: false,
-                        initialCalendarDateOverride: DateTime.now(),
-                      )
-                    : Container()
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+//                    Container(
+//                      alignment: Alignment.center,
+//                      width: MediaQuery.of(context).size.width,
+//                      color: Colors.black,
+//                      padding: const EdgeInsets.all(20.0),
+//                      child: Text("Call for Movers:",style: TextStyle(color:Colors.white,fontStyle: FontStyle.normal,fontSize: 20.0,fontWeight: FontWeight.w300),),
+//                    ),
+                     PickDropWidget(title: "Pick Up Address",),
+                     PickDropWidget(title: "Drop Address",) ,
+                    InkWell(onTap: ()=>showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now().subtract(Duration(seconds: 1)), lastDate: DateTime.now().add(Duration(days: 31)))
+                    ,child: Container(
+                      padding: EdgeInsets.all(20.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(left:10.0),
+                            child: Text("Date",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54),),
+                          ),
+                          Flex(
+
+                            children: <Widget>[
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left:20.0),
+                                child: TextField(decoration: InputDecoration(labelText: "DD"),enabled: false,),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left:20.0),
+                                child: TextField(decoration: InputDecoration(labelText: "MM"),enabled: false),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left:20.0),
+                                child: TextField(decoration: InputDecoration(labelText: "YY"),enabled: false),
+                              ),
+                            ),
+                          ], direction: Axis.horizontal,),
+                        ],
+                      ),
+                    ),),
+                     Column(
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       mainAxisAlignment: MainAxisAlignment.spaceAround,
+                       children: <Widget>[
+                         Padding(
+                           padding: const EdgeInsets.only(left:10.0),
+                           child: Text("Select a good time for survey?",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black54),),
+                         ),
+                         Padding(
+                           padding: const EdgeInsets.all(10.0),
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                             children: <Widget>[
+                               FlatButton(onPressed: (){}, child: Text("Morning"),shape: StadiumBorder(side: BorderSide(color: Colors.blue,width: 2.0)),),
+                               FlatButton(onPressed: (){}, child: Text("Afternoon"),shape: StadiumBorder(side: BorderSide(color: Colors.blue,width: 2.0)),),
+                               FlatButton(onPressed: (){}, child: Text("Evening"),shape: StadiumBorder(side: BorderSide(color: Colors.blue,width: 2.0)),)
+                             ],
+                           ),
+                         ),
+                       ],
+                     )
+                  ],
+                ),
+                LinearProgressIndicator(
+                  backgroundColor: Colors.white,
+                  value: 0.1 * progress,
+                )
+
               ],
             ),
-            LinearProgressIndicator(
-              backgroundColor: Colors.white,
-              value: 0.1 * progress,
-            )
-          ],
-        ),
-        bottomNavigationBar: BottomAppBar(
-          child: Container(
-            padding: EdgeInsets.all(10.0),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  FlatButton(
-                    child: Text("Back"),
-                    onPressed: () {
-                      progress--;
-                      setState(() {});
-                    },
-                  ),
-                  FlatButton(
-                    child: Text("Next"),
-                    onPressed: () {
-                      progress++;
-                      setState(() {});
-                    },
-                  ),
-                ]),
           ),
-        ),
+        ),floatingActionButton: FloatingActionButton.extended(onPressed: (){}, icon: Icon(Icons.check), label: Text("Request Movers")),
       ),
     );
   }
