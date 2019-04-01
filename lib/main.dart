@@ -57,10 +57,13 @@ class _MyHomePageState extends State<MyHomePage> {
       top: true,
       child: Scaffold(
                 appBar: AppBar(
+                  iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Colors.black87,
           elevation: 1.0,
           centerTitle: true,
           title: Text("SHYFT",style: TextStyle(color: Colors.white,letterSpacing: 2.5,fontWeight: FontWeight.bold),),
+
+                  actions: <Widget>[IconButton(icon: Icon(Icons.person_pin), onPressed: (){})],
         ),
 
       body: SafeArea(
@@ -70,16 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: HomePageWidget(),
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: 0,
-            onTap: (selectedPage) {},
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite), title: Text("Your Orders")),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person), title: Text("Profile")),
-            ]
-        ),
+        
         resizeToAvoidBottomPadding: false,
       ),
     );
