@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "926627372949",
+    "firebase_url": "https://shyft-7586b.firebaseio.com",
+    "project_id": "shyft-7586b",
+    "storage_bucket": "shyft-7586b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926627372949:android:b16a6bcd87b956fe",
+        "android_client_info": {
+          "package_name": "ooo.shyft.shyft_packers_and_movers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926627372949-s0sg6fc61l5g8djsstqc900l5gtsmlse.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ooo.shyft.shyft_packers_and_movers",
+            "certificate_hash": "fb2d35a4592c56898b1a4f68c8e99b2816350796"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDkNurAoGhqN4t4Vc6Y3uuULufemwBfek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926627372949-6ph7c7jtcfi29eequ86v3dqh2qdn9khd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
