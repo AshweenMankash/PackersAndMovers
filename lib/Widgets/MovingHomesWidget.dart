@@ -20,7 +20,6 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
   void initState() {
     super.initState();
     controller.loading.add(false);
-    controller.movingDetails.add(model);
   }
 
   @override
@@ -30,9 +29,13 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
     controller.dispose();
   }
 
+  var pickUpText = TextEditingController();
+  var dropText = TextEditingController();
+
+
   onChanged() {}
-  var labelStyle = TextStyle(
-      fontWeight: FontWeight.bold, fontStyle: FontStyle.normal, fontSize: 15.0);
+  var labelStyle =
+  TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.normal,fontSize: 15.0);
 
   @override
   Widget build(BuildContext context) {
@@ -57,25 +60,24 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                     ),
                   ),
                   resizeToAvoidBottomInset: false,
-                  body: StreamBuilder<MovingServiceModel>(
-                      stream: controller.movingDetails.stream,
-                      builder: (context, snapshot) {
-                        return Container(
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          padding: EdgeInsets.all(20.0),
-                          color: Colors.white,
-                          child: Material(
-                            color: Colors.white,
-                            shape: SuperellipseShape(
-                                borderRadius: BorderRadius.circular(50.0)),
-                            elevation: 2.0,
-                            child: Stack(
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
+                  body: Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.8,
+                    padding: EdgeInsets.all(20.0),
+                    color: Colors.white,
+                    child: Material(
+                      color: Colors.white,
+                      shape: SuperellipseShape(
+                          borderRadius: BorderRadius.circular(50.0)),
+                      elevation: 2.0,
+                      child: Stack(
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
 //                    Container(
 //                      alignment: Alignment.center,
 //                      width: MediaQuery.of(context).size.width,
@@ -83,315 +85,269 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
 //                      padding: const EdgeInsets.all(20.0),
 //                      child: Text("Call for Movers:",style: TextStyle(color:Colors.white,fontStyle: FontStyle.normal,fontSize: 20.0,fontWeight: FontWeight.w300),),
 //                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                color: Colors.white),
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15.0,
-                                                          right: 15.0),
-                                                  child: TextField(
-                                                    controller:
-                                                        TextEditingController(
-                                                            text: snapshot.data
-                                                                    ?.pickUpAddress ??
-                                                                ""),
-                                                    onChanged: (pickLoc) {
-                                                      model.pickUpAddress =
-                                                          pickLoc;
-                                                      controller.movingDetails
-                                                          .add(model);
-                                                    },
-                                                    decoration: InputDecoration(
-                                                        labelText:
-                                                            "Pick up Location (Only in Gurgaon)",
-                                                        labelStyle: labelStyle,
-                                                        helperText:
-                                                            "Ex: House No.8, Rajeev Nagar, Gurgaon"),
-                                                  ),
-                                                ),
-                                              ],
-                                            ))
-                                      ],
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        Container(
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                                color: Colors.white),
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: <Widget>[
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 15.0,
-                                                          right: 15.0),
-                                                  child: TextField(
-                                                    onChanged: (dropLoc) {
-                                                      model.dropAddress =
-                                                          dropLoc;
-                                                      controller.movingDetails
-                                                          .add(model);
-                                                    },
-                                                    controller:
-                                                        TextEditingController(
-                                                            text: snapshot.data
-                                                                    ?.dropAddress ??
-                                                                ""),
-                                                    decoration: InputDecoration(
-                                                        labelText:
-                                                            "Drop Address",
-                                                        labelStyle: labelStyle,
-                                                        helperText:
-                                                            "Ex: House No.8, West Delhi, Delhi"),
-                                                  ),
-                                                ),
-                                              ],
-                                            ))
-                                      ],
-                                    ),
-                                    InkWell(
-                                      onTap: () async {
-                                        this.model.date = await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime.now()
-                                                .subtract(Duration(seconds: 1)),
-                                            lastDate: DateTime.now()
-                                                .add(Duration(days: 31)));
-                                        controller.movingDetails
-                                            .add(this.model);
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(20.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10.0),
-                                              child: Text(
-                                                "Date",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black54),
-                                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          color: Colors.white),
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: <Widget>[
+
+                                          Padding(
+                                            padding: const EdgeInsets.only(left:15.0,right:15.0),
+                                            child: TextField(
+
+                                              onChanged: (pick){
+                                                this.controller.movingDetails.pickUpAddress=pick;
+                                                setState(() {
+
+                                                });
+                                              },
+                                              decoration: InputDecoration(
+                                                  labelText: 'Pickup Address',
+                                                  labelStyle: labelStyle,
+                                                  helperText: "Ex: House No.8, West Delhi, Delhi"),
+                                              controller: this.pickUpText,
                                             ),
-                                            Flex(
-                                              children: <Widget>[
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20.0),
-                                                    child: TextField(
-                                                      controller:
-                                                          TextEditingController(
-                                                              text: this
-                                                                      .model
-                                                                      .date
-                                                                      .day
-                                                                      .toString() ??
-                                                                  ""),
-                                                      decoration:
-                                                          InputDecoration(
-                                                              labelText: "DD"),
-                                                      enabled: false,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20.0),
-                                                    child: TextField(
-                                                        controller:
-                                                            TextEditingController(
-                                                                text: this
-                                                                        .model
-                                                                        .date
-                                                                        .month
-                                                                        .toString() ??
-                                                                    ""),
-                                                        decoration:
-                                                            InputDecoration(
-                                                                labelText:
-                                                                    "MM"),
-                                                        enabled: false),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 20.0),
-                                                    child: TextField(
-                                                        controller:
-                                                            TextEditingController(
-                                                                text: this
-                                                                        .model
-                                                                        .date
-                                                                        .year
-                                                                        .toString() ??
-                                                                    ""),
-                                                        decoration:
-                                                            InputDecoration(
-                                                                labelText:
-                                                                    "YY"),
-                                                        enabled: false),
-                                                  ),
-                                                ),
-                                              ],
-                                              direction: Axis.horizontal,
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+
+                                  Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10.0),
+                                          color: Colors.white),
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.all(10.0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: <Widget>[
+
+                                          Padding(
+                                            padding: const EdgeInsets.only(left:15.0,right:15.0),
+                                            child: TextField(
+                                              onChanged: (drop){
+                                                this.controller.movingDetails.dropAddress=drop;
+                                                setState(() {
+
+                                                });
+                                              },
+                                              decoration: InputDecoration(
+                                                  labelText: "Drop Address",
+                                                  labelStyle: labelStyle,
+                                                  helperText: "Ex: House No.8, West Delhi, Delhi"),
+                                              controller: this.dropText,
                                             ),
-                                          ],
+                                          ),
+                                        ],
+                                      ))
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  controller.movingDetails?.date = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime.now()
+                                          .subtract(Duration(seconds: 1)),
+                                      lastDate: DateTime.now()
+                                          .add(Duration(days: 31)));
+                                  print(controller.movingDetails.date.toIso8601String());
+                                        setState(() {
+
+                                        });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(20.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.only(left: 10.0),
+                                        child: Text(
+                                          "Date",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black54),
                                         ),
                                       ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 30.0),
-                                          child: Text(
-                                            "Select a good time for survey?",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black54),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(10.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              FlatButton(
-                                                onPressed: () {
-                                                  this.model.surveyTime =
-                                                      "Morning";
-                                                  controller.movingDetails
-                                                      .add(model);
-                                                },
-                                                color:
-                                                    snapshot.data?.surveyTime ==
-                                                            "Morning"
-                                                        ? Colors.blue
-                                                        : Colors.transparent,
-                                                child: Text("Morning",
-                                                    style: TextStyle(
-                                                        color: snapshot.data
-                                                                    ?.surveyTime ==
-                                                                "Morning"
-                                                            ? Colors.white
-                                                            : Colors.black)),
-                                                shape: StadiumBorder(
-                                                    side: BorderSide(
-                                                        color: Colors.blue,
-                                                        width: 2.0)),
+                                      Flex(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20.0),
+                                              child: TextField(
+                                                controller:
+                                                TextEditingController(
+                                                    text: this.controller.movingDetails.date?.day
+                                                        .toString() ??
+                                                        ""),
+                                                decoration: InputDecoration(
+                                                    labelText: "DD"),
+                                                enabled: false,
                                               ),
-                                              FlatButton(
-                                                onPressed: () {
-                                                  this.model.surveyTime =
-                                                      "Afternoon";
-                                                  controller.movingDetails
-                                                      .add(model);
-                                                },
-                                                color:
-                                                    snapshot.data?.surveyTime ==
-                                                            "Afternoon"
-                                                        ? Colors.blue
-                                                        : Colors.transparent,
-                                                child: Text(
-                                                  "Afternoon",
-                                                  style: TextStyle(
-                                                      color: snapshot.data
-                                                                  ?.surveyTime ==
-                                                              "Afternoon"
-                                                          ? Colors.white
-                                                          : Colors.black),
-                                                ),
-                                                shape: StadiumBorder(
-                                                    side: BorderSide(
-                                                        color: Colors.blue,
-                                                        width: 2.0)),
-                                              ),
-                                              FlatButton(
-                                                onPressed: () {
-                                                  this.model.surveyTime =
-                                                      "Evening";
-                                                  controller.movingDetails
-                                                      .add(model);
-                                                },
-                                                color:
-                                                    snapshot.data?.surveyTime ==
-                                                            "Evening"
-                                                        ? Colors.blue
-                                                        : Colors.transparent,
-                                                child: Text("Evening",
-                                                    style: TextStyle(
-                                                        color: snapshot.data
-                                                                    ?.surveyTime ==
-                                                                "Evening"
-                                                            ? Colors.white
-                                                            : Colors.black)),
-                                                shape: StadiumBorder(
-                                                    side: BorderSide(
-                                                        color: Colors.blue,
-                                                        width: 2.0)),
-                                              )
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20.0),
+                                              child: TextField(
+                                                  controller:
+                                                  TextEditingController(
+                                                      text: this.controller.movingDetails.date?.month
+                                                          .toString() ??
+                                                          ""),
+                                                  decoration: InputDecoration(
+                                                      labelText: "MM"),
+                                                  enabled: false),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 20.0),
+                                              child: TextField(
+                                                  controller:
+                                                  TextEditingController(
+                                                      text: this.controller.movingDetails?.date
+                                                          ?.year
+                                                          ?.toString() ??
+                                                          ""),
+                                                  decoration: InputDecoration(
+                                                      labelText: "YY"),
+                                                  enabled: false),
+                                            ),
+                                          ),
+                                        ],
+                                        direction: Axis.horizontal,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                LinearProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                  value: 0.1 * progress,
-                                )
-                              ],
-                            ),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceAround,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 30.0),
+                                    child: Text(
+                                      "Select a good time for survey?",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black54),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            this
+                                                .controller
+                                                .movingDetails
+                                                .surveyTime = "Morning";
+                                            setState(() {});
+                                          },
+                                          child: Text("Morning",
+                                            style: TextStyle(
+                                                color:
+                                                this.controller.movingDetails
+                                                    ?.surveyTime ==
+                                                    "Morning"
+                                                    ? Colors.white
+                                                    : Colors.black),),
+                                          color: this.controller.movingDetails?.surveyTime ==
+                                              "Morning"
+                                              ? Colors.blue
+                                              : Colors.transparent,
+                                          shape: StadiumBorder(
+                                              side:BorderSide(
+                                                  color: Colors.blue,
+                                                  width: 2.0)),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            this.controller.movingDetails?.surveyTime = "Afternoon";
+                                            setState(() {});
+                                          },
+                                          color: this.controller.movingDetails?.surveyTime ==
+                                        "Afternoon"
+                                        ? Colors.blue
+                                            : Colors.transparent,
+                                          child: Text(
+                                            "Afternoon",
+                                            style: TextStyle(
+                                                color:
+                                                this.controller.movingDetails
+                                                    ?.surveyTime ==
+                                                    "Afternoon"
+                                                    ? Colors.white
+                                                    : Colors.black),
+                                          ),
+                                          shape: StadiumBorder(
+                                              side: BorderSide(
+                                                  color: Colors.blue,
+                                                  width: 2.0)),
+                                        ),
+                                        FlatButton(
+                                          onPressed: () {
+                                            controller.movingDetails?.surveyTime = "Evening";
+                                            setState(() {});
+                                          },
+                                          color: this.controller.movingDetails?.surveyTime ==
+                                              "Evening"
+                                              ? Colors.blue
+                                              : Colors.transparent,
+                                          child: Text("Evening",
+                                            style: TextStyle(
+                                                color:
+                                                this.controller.movingDetails
+                                                    ?.surveyTime ==
+                                                    "Evening"
+                                                    ? Colors.white
+                                                    : Colors.black),),
+                                          shape: StadiumBorder(
+                                              side: BorderSide(
+                                                  color: Colors.blue,
+                                                  width: 2.0)),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
-                        );
-                      }),
+                          LinearProgressIndicator(
+                            backgroundColor: Colors.white,
+                            value: 0.1 * progress,
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   floatingActionButton: FloatingActionButton.extended(
-                    onPressed: () {
-                      CloudFunctions.instance.call(
-                          functionName: "setData", parameters: model.toJson());
-                    },
+                    onPressed:this.controller.upload,
                     icon: Icon(
                       Icons.check_circle,
                       color: Colors.white,
@@ -404,15 +360,21 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                 ),
                 snapshot.hasData
                     ? snapshot.data
-                        ? Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: MediaQuery.of(context).size.height,
-                            color: Colors.black12,
-                            child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: CircularProgressIndicator()),
-                          )
-                        : Container()
+                    ? Container(
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height,
+                  color: Colors.black12,
+                  child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: CircularProgressIndicator()),
+                )
+                    : Container()
                     : Container()
               ],
             );
