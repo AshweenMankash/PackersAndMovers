@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shyft_packers_and_movers/Model/MovingServiceModel.dart';
+import 'package:shyft_packers_and_movers/Model/UiConstants.dart';
 import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
 import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
 import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
@@ -12,6 +14,7 @@ class MovingHomesWidget extends StatefulWidget {
 class _MovingHomesWidgetState extends State<MovingHomesWidget> {
   var progress = 0;
   MovingServiceModel model = new MovingServiceModel();
+  MovingServiceViewModel controller = new MovingServiceViewModel();
 
   @override
   void initState() {
@@ -107,9 +110,9 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                                 });
                                               },
                                               decoration: InputDecoration(
-                                                  labelText: 'Pickup Address',
+                                                  labelText: UiConstants.pickUpAddress,
                                                   labelStyle: labelStyle,
-                                                  helperText: "Ex: House No.8, West Delhi, Delhi"),
+                                                  helperText: UiConstants.pickUpAddressHint),
                                               controller: this.pickUpText,
                                             ),
                                           ),
@@ -141,9 +144,9 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                                 });
                                               },
                                               decoration: InputDecoration(
-                                                  labelText: "Drop Address",
+                                                  labelText: UiConstants.dropAddress,
                                                   labelStyle: labelStyle,
-                                                  helperText: "Ex: House No.8, West Delhi, Delhi"),
+                                                  helperText: UiConstants.dropAddressHint),
                                               controller: this.dropText,
                                             ),
                                           ),
@@ -175,7 +178,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                         padding:
                                         const EdgeInsets.only(left: 10.0),
                                         child: Text(
-                                          "Date",
+                                          UiConstants.dateHeading,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black54),
@@ -194,7 +197,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                                         .toString() ??
                                                         ""),
                                                 decoration: InputDecoration(
-                                                    labelText: "DD"),
+                                                    labelText: UiConstants.dateLabelText),
                                                 enabled: false,
                                               ),
                                             ),
@@ -210,7 +213,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                                           .toString() ??
                                                           ""),
                                                   decoration: InputDecoration(
-                                                      labelText: "MM"),
+                                                      labelText: UiConstants.monthLabelText),
                                                   enabled: false),
                                             ),
                                           ),
@@ -226,7 +229,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                                           ?.toString() ??
                                                           ""),
                                                   decoration: InputDecoration(
-                                                      labelText: "YY"),
+                                                      labelText: UiConstants.yearLabelText),
                                                   enabled: false),
                                             ),
                                           ),
@@ -245,7 +248,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                   Padding(
                                     padding: const EdgeInsets.only(left: 30.0),
                                     child: Text(
-                                      "Select a good time for survey?",
+                                      UiConstants.surveyHeading,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black54),
@@ -261,19 +264,19 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                           onPressed: () {
                                             controller
                                                 .movingDetails
-                                                .surveyTime = "Morning";
+                                                .surveyTime = UiConstants.surveyTimeOptions[0];
                                             setState(() {});
                                           },
-                                          child: Text("Morning",
+                                          child: Text(UiConstants.surveyTimeOptions[0],
                                             style: TextStyle(
                                                 color:
                                                 controller.movingDetails
                                                     ?.surveyTime ==
-                                                    "Morning"
+                                                    UiConstants.surveyTimeOptions[0]
                                                     ? Colors.white
                                                     : Colors.black),),
                                           color: controller.movingDetails?.surveyTime ==
-                                              "Morning"
+                                              UiConstants.surveyTimeOptions[0]
                                               ? Colors.blue
                                               : Colors.transparent,
                                           shape: StadiumBorder(
@@ -283,20 +286,20 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                         ),
                                         FlatButton(
                                           onPressed: () {
-                                            controller.movingDetails?.surveyTime = "Afternoon";
+                                            controller.movingDetails?.surveyTime = UiConstants.surveyTimeOptions[1];
                                             setState(() {});
                                           },
                                           color: controller.movingDetails?.surveyTime ==
-                                        "Afternoon"
+                                              UiConstants.surveyTimeOptions[1]
                                         ? Colors.blue
                                             : Colors.transparent,
                                           child: Text(
-                                            "Afternoon",
+                                            UiConstants.surveyTimeOptions[1],
                                             style: TextStyle(
                                                 color:
                                                 controller.movingDetails
                                                     ?.surveyTime ==
-                                                    "Afternoon"
+                                                    UiConstants.surveyTimeOptions[1]
                                                     ? Colors.white
                                                     : Colors.black),
                                           ),
@@ -307,19 +310,19 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                         ),
                                         FlatButton(
                                           onPressed: () {
-                                            controller.movingDetails?.surveyTime = "Evening";
+                                            controller.movingDetails?.surveyTime = UiConstants.surveyTimeOptions[2];
                                             setState(() {});
                                           },
                                           color: controller.movingDetails?.surveyTime ==
-                                              "Evening"
+                                              UiConstants.surveyTimeOptions[2]
                                               ? Colors.blue
                                               : Colors.transparent,
-                                          child: Text("Evening",
+                                          child: Text(UiConstants.surveyTimeOptions[2],
                                             style: TextStyle(
                                                 color:
                                                 controller.movingDetails
                                                     ?.surveyTime ==
-                                                    "Evening"
+                                                    UiConstants.surveyTimeOptions[2]
                                                     ? Colors.white
                                                     : Colors.black),),
                                           shape: StadiumBorder(
@@ -349,7 +352,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                       color: Colors.white,
                     ),
                     label: Text(
-                      "Request Movers",
+                      UiConstants.requestMoversButtonText,
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
@@ -378,5 +381,4 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
     );
   }
 
-  uploadOnCloud() {}
 }

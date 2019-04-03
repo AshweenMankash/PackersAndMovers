@@ -20,10 +20,13 @@ class MovingServiceViewModel implements BLoc{
   }
 
 
-  upload(){
+  upload()async{
     loading.add(true);
-    CloudFunctions.instance.call(functionName: "setData",parameters: movingDetails.toJson()).whenComplete((){
+     CloudFunctions.instance.call(functionName: "setData",parameters: movingDetails.toJson()).then((a){
+      print(a["Name"]);
+    }).whenComplete((){
       loading.add(false);
+
     }).catchError((e){
       loading.add(false);
       print(e.toString());
@@ -45,4 +48,3 @@ class MovingServiceViewModel implements BLoc{
     buttonStatus.close();
   }
 }
-MovingServiceViewModel controller = new MovingServiceViewModel();

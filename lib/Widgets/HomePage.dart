@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shyft_packers_and_movers/Login/LoginFile.dart';
 import 'package:shyft_packers_and_movers/Model/HomePageModel.dart';
+import 'package:shyft_packers_and_movers/Repository/Repository.dart';
+import 'package:shyft_packers_and_movers/ViewModel/HomePageViewModel.dart';
 import 'package:shyft_packers_and_movers/Widgets/MovingHomesWidget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class HomePageWidget extends StatefulWidget {
   @override
@@ -8,9 +13,21 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  HomePageModel homePageModel = new HomePageModel();
+Login login = new Login();
+HomePageViewModel _homePageViewModel = new HomePageViewModel();
+HomePageModel homePageModel = new HomePageModel();
+FirebaseDatabase data;
+
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    data = FirebaseDatabase();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

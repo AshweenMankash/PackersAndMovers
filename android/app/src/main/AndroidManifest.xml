@@ -10,11 +10,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="shyft_packers_and_movers"
+        android:label="Shyft"
         android:icon="@mipmap/ic_launcher">
-
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyA94q_Nvl9ZuvVCBI2tnH5Tq-PoMzYA4jQ"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
