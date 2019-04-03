@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shyft_packers_and_movers/Model/MovingServiceModel.dart';
 import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
 import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
-import 'package:shyft_packers_and_movers/Widgets/InfoWidgets/PickLocationInfoWidget.dart';
-import 'package:shyft_packers_and_movers/Widgets/PickDropWidget.dart';
-import 'package:flutter_calendar/flutter_calendar.dart';
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
 
 class MovingHomesWidget extends StatefulWidget {
   @override
@@ -104,7 +101,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                             child: TextField(
 
                                               onChanged: (pick){
-                                                this.controller.movingDetails.pickUpAddress=pick;
+                                                controller.movingDetails.pickUpAddress=pick;
                                                 setState(() {
 
                                                 });
@@ -138,7 +135,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                             padding: const EdgeInsets.only(left:15.0,right:15.0),
                                             child: TextField(
                                               onChanged: (drop){
-                                                this.controller.movingDetails.dropAddress=drop;
+                                                controller.movingDetails.dropAddress=drop;
                                                 setState(() {
 
                                                 });
@@ -193,7 +190,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                               child: TextField(
                                                 controller:
                                                 TextEditingController(
-                                                    text: this.controller.movingDetails.date?.day
+                                                    text: controller.movingDetails.date?.day
                                                         .toString() ??
                                                         ""),
                                                 decoration: InputDecoration(
@@ -209,7 +206,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                               child: TextField(
                                                   controller:
                                                   TextEditingController(
-                                                      text: this.controller.movingDetails.date?.month
+                                                      text: controller.movingDetails.date?.month
                                                           .toString() ??
                                                           ""),
                                                   decoration: InputDecoration(
@@ -224,7 +221,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                               child: TextField(
                                                   controller:
                                                   TextEditingController(
-                                                      text: this.controller.movingDetails?.date
+                                                      text: controller.movingDetails?.date
                                                           ?.year
                                                           ?.toString() ??
                                                           ""),
@@ -262,8 +259,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                       children: <Widget>[
                                         FlatButton(
                                           onPressed: () {
-                                            this
-                                                .controller
+                                            controller
                                                 .movingDetails
                                                 .surveyTime = "Morning";
                                             setState(() {});
@@ -271,12 +267,12 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                           child: Text("Morning",
                                             style: TextStyle(
                                                 color:
-                                                this.controller.movingDetails
+                                                controller.movingDetails
                                                     ?.surveyTime ==
                                                     "Morning"
                                                     ? Colors.white
                                                     : Colors.black),),
-                                          color: this.controller.movingDetails?.surveyTime ==
+                                          color: controller.movingDetails?.surveyTime ==
                                               "Morning"
                                               ? Colors.blue
                                               : Colors.transparent,
@@ -287,10 +283,10 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                         ),
                                         FlatButton(
                                           onPressed: () {
-                                            this.controller.movingDetails?.surveyTime = "Afternoon";
+                                            controller.movingDetails?.surveyTime = "Afternoon";
                                             setState(() {});
                                           },
-                                          color: this.controller.movingDetails?.surveyTime ==
+                                          color: controller.movingDetails?.surveyTime ==
                                         "Afternoon"
                                         ? Colors.blue
                                             : Colors.transparent,
@@ -298,7 +294,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                             "Afternoon",
                                             style: TextStyle(
                                                 color:
-                                                this.controller.movingDetails
+                                                controller.movingDetails
                                                     ?.surveyTime ==
                                                     "Afternoon"
                                                     ? Colors.white
@@ -314,14 +310,14 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                             controller.movingDetails?.surveyTime = "Evening";
                                             setState(() {});
                                           },
-                                          color: this.controller.movingDetails?.surveyTime ==
+                                          color: controller.movingDetails?.surveyTime ==
                                               "Evening"
                                               ? Colors.blue
                                               : Colors.transparent,
                                           child: Text("Evening",
                                             style: TextStyle(
                                                 color:
-                                                this.controller.movingDetails
+                                                controller.movingDetails
                                                     ?.surveyTime ==
                                                     "Evening"
                                                     ? Colors.white
@@ -347,7 +343,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                     ),
                   ),
                   floatingActionButton: FloatingActionButton.extended(
-                    onPressed:this.controller.upload,
+                    onPressed:controller.upload,
                     icon: Icon(
                       Icons.check_circle,
                       color: Colors.white,

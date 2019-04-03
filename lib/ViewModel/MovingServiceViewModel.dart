@@ -12,7 +12,7 @@ class MovingServiceViewModel implements BLoc{
 
   MovingServiceModel movingDetails ;
   StreamController<bool> loading  = new StreamController() ;
-  StreamController<bool> buttonStatus  = new StreamController.broadcast() ;
+  StreamController<bool> buttonStatus  = new StreamController.broadcast();
 
   MovingServiceViewModel(){
     movingDetails = new MovingServiceModel();
@@ -30,11 +30,6 @@ class MovingServiceViewModel implements BLoc{
     });
   }
   Observable lol ;
-  MovingServiceViewModel(){
-    movingDetails.stream.listen((data){
-
-    });
-  }
 
 
 //  upload(){
