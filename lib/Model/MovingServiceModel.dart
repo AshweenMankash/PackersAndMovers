@@ -14,7 +14,7 @@ class MovingServiceModel{
   }
 
   toJson(){
-    var jsonFile = {
+    return {
       "pickUpAddress":this.pickUpAddress,
       "dropAddress":this.dropAddress,
       "date":this.date.millisecondsSinceEpoch,

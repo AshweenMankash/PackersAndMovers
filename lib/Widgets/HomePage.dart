@@ -40,7 +40,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Container(
-                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                        color: Color.fromRGBO(0, 0, 0, 0.4),
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height*0.2,
                         padding: EdgeInsets.all(20.0),
@@ -73,7 +73,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     Padding(
                       padding: const EdgeInsets.all(30.0),
                       child: Container(
-                        color: Color.fromRGBO(0, 0, 0, 0.7),
+                        color: Color.fromRGBO(0, 0, 0, 0.4),
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height*0.2,
                         padding: EdgeInsets.all(20.0),
