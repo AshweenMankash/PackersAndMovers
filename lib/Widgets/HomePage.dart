@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shyft_packers_and_movers/Model/HomePageModel.dart';
 import 'package:shyft_packers_and_movers/Widgets/MovingHomesWidget.dart';
 
 class HomePageWidget extends StatefulWidget {
@@ -7,6 +8,7 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
+  HomePageModel homePageModel = new HomePageModel();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -61,18 +63,13 @@ class _HomePageWidgetState extends State<HomePageWidget> {
 
             ], direction: Axis.vertical,
           ),
-          StreamBuilder<bool>(
-            stream: null,
-            builder: (context, snapshot) {
-              return Expanded(child: Padding(padding: EdgeInsets.all(20.0),child: Container(
-                child: Text("You have a shyfting going on",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Colors.black54),),
-              ),));
-            }
-          )
+          Expanded(child: Padding(padding: EdgeInsets.all(20.0),child: Container(
+            child: Text("You have a shyfting going on",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+                color: Colors.black54),),
+          ),))
 
 
         ],
