@@ -22,7 +22,7 @@ class MovingServiceViewModel implements BLoc{
 
   upload()async{
     loading.add(true);
-     CloudFunctions.instance.call(functionName: "setData",parameters: movingDetails.toJson()).then((a){
+     CloudFunctions.instance.call(functionName: "onInitialized",parameters: movingDetails.toJson()).then((a){
       print(a["Name"]);
     }).whenComplete((){
       loading.add(false);
