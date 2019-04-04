@@ -13,7 +13,6 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-Login login = new Login();
 HomePageViewModel _homePageViewModel = new HomePageViewModel();
 HomePageModel homePageModel = new HomePageModel();
 FirebaseDatabase data;
@@ -22,7 +21,8 @@ FirebaseDatabase data;
   void initState() {
     // TODO: implement initState
     super.initState();
-    data = FirebaseDatabase();
+
+    data =FirebaseDatabase();
   }
 
   @override

@@ -21,6 +21,14 @@
             "package_name": "ooo.shyft.shyft_packers_and_movers",
             "certificate_hash": "fb2d35a4592c56898b1a4f68c8e99b2816350796"
           }
+        },
+        {
+          "client_id": "926627372949-s2klleqdguhn7ingtrud5p4lhe852hv0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ooo.shyft.shyft_packers_and_movers",
+            "certificate_hash": "110f8324d9b31c4dbd531df105c1b84783ce8718"
+          }
         }
       ],
       "api_key": [
