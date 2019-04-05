@@ -9,13 +9,17 @@ abstract class Database{
 
 class FireBaseCloudFunctions{
   FireBaseCloudFunctions.initialize (var data){
-    CloudFunctions.instance.call(functionName: "onInitialized",parameters:data);
+    CloudFunctions.instance.call(
+        functionName: "onInitialized", parameters: data)
+        .then((a) {
+      print("Successful");
+    }).whenComplete(() {
+      print("Successful");
+
+    }).catchError((e) {
+      print(e.toString());
+    });
   }
-
-
-
-
-
 }
 
 
@@ -23,22 +27,26 @@ class FireStoreDatabase implements Database{
   Login login ;
   bool isLoggedIn;
   var uid;
-  FireBaseCloudFunctions _fireBaseCloudFunctions;
-
+  var movingData;
   checkIfShyftingIsOn(){
     bool on;
-
-     Firestore.instance
+      Firestore.instance
         .document("Users/$uid/")
-        .snapshots().listen(((d)=>d.exists?on=d.data["isShyfting"]:on=false));
-     print(on.toString()+"asdadasdasdads");
-    return on;
+        .snapshots().listen(((d)=>d.exists?d.data["isShyfting"]:false)).onData((data){
+          print(data.exists?data.data["isShyfting"]+"hello":false);
+          on =  data.exists?data.data["isShyfting"]:false;
+     });
+     return on;
   }
   FireStoreDatabase(){
-    _fireBaseCloudFunctions = FireBaseCloudFunctions();
+
     isLoggedIn=false;
     login = Login();
     initialize();
+    }
+
+    initializeCurrentWork(var initializeCurrentWork){
+      FireBaseCloudFunctions.initialize(initializeCurrentWork);
     }
 
 
@@ -52,7 +60,6 @@ class FireStoreDatabase implements Database{
           else{
             isLoggedIn = true;
               this.uid = u.uid;
-            _fireBaseCloudFunctions.isMovingOn(uid);
           }
         });
       }

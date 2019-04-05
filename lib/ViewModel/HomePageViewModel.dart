@@ -15,8 +15,15 @@ class HomePageViewModel implements BLoc{
 
   HomePageViewModel(){
     _fireStoreDatabase = FireStoreDatabase();
-    isMovingOn.add(_fireStoreDatabase.checkIfShyftingIsOn());
+    fetch();
+
   }
+fetch()async{
+    dataExists = await _fireStoreDatabase.checkIfShyftingIsOn();
+
+    isMovingOn.add(dataExists);
+}
+
 
   @override
   void dispose() {
@@ -24,4 +31,4 @@ class HomePageViewModel implements BLoc{
   }
 }
 
-HomePageViewModel homePageViewModel = HomePageViewModel();
+HomePageViewModel homePageViewModel ;

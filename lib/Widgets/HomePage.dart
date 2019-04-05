@@ -21,10 +21,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    homePageViewModel=HomePageViewModel();
   }
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<Object>(
+    return StreamBuilder<bool>(
       initialData: false,
       stream: homePageViewModel.isMovingOn.stream,
       builder: (context, snapshot) {
