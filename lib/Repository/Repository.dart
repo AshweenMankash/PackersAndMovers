@@ -23,56 +23,42 @@ class FireBaseCloudFunctions{
 }
 
 
-class FireStoreDatabase implements Database{
-  Login login ;
+class FireStoreDatabase implements Database {
+  Login login;
+
   bool isLoggedIn;
+
+  var isShiftingOn;
   var uid;
   var movingData;
-  checkIfShyftingIsOn(){
-    bool on;
-      Firestore.instance
+  checkIfShiftingIsOn() async {
+    Firestore.instance
         .document("Users/$uid/")
-        .snapshots().listen(((d)=>d.exists?d.data["isShyfting"]:false)).onData((data){
-          print(data.exists?data.data["isShyfting"]+"hello":false);
-          on =  data.exists?data.data["isShyfting"]:false;
-     });
-     return on;
+        .snapshots().listen(((data) {
+      isShiftingOn = data.exists ? data.data["isShyfting"] : false;
+      print(isShiftingOn);
+    }));
   }
-  FireStoreDatabase(){
 
-    isLoggedIn=false;
+  FireStoreDatabase() {
+    isLoggedIn = false;
     login = Login();
     initialize();
-    }
+  }
 
-    initializeCurrentWork(var initializeCurrentWork){
-      FireBaseCloudFunctions.initialize(initializeCurrentWork);
-    }
+  initializeCurrentWork(var initializeCurrentWork) { FireBaseCloudFunctions.initialize(initializeCurrentWork); }
 
-
-    initialize()async{
-      isLoggedIn = await login.login();
-
-      FirebaseAuth.instance.currentUser().then((u)async{
-          if(u==null){
-            isLoggedIn = await login.signIn();
-          }
-          else{
-            isLoggedIn = true;
-              this.uid = u.uid;
-          }
-        });
+  initialize() async {
+    isLoggedIn = await login.login();
+    FirebaseAuth.instance.currentUser().then((u) async {
+      if (u == null) {
+        isLoggedIn = await login.signIn();
       }
-
-
-
-
-
-    }
-
-
-
-
-
-
-
+      else {
+        isLoggedIn = true;
+        this.uid = u.uid;
+      await checkIfShiftingIsOn();
+      }
+    });
+  }
+}
