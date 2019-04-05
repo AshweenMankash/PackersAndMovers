@@ -20,18 +20,23 @@ class MovingServiceViewModel implements BLoc{
   }
 
 
-  upload()async{
-    loading.add(true);
-     CloudFunctions.instance.call(functionName: "onInitialized",parameters: movingDetails.toJson()).then((a){
-      print(a["Name"]);
-    }).whenComplete((){
-      loading.add(false);
-
-    }).catchError((e){
-      loading.add(false);
-      print(e.toString());
-    });
-  }
+  Future<bool> upload()async{
+    if(movingDetails.notNull()) {
+      loading.add(true);
+      CloudFunctions.instance.call(
+          functionName: "onInitialized", parameters: movingDetails.toJson())
+          .then((a) {
+        print(a["Name"]);
+      }).whenComplete(() {
+        loading.add(false);
+      }).catchError((e) {
+        loading.add(false);
+        print(e.toString());
+      });
+    return true;
+    }
+    else return false;
+    }
   Observable lol ;
 
 

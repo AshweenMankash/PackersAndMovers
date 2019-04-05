@@ -32,6 +32,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
   var pickUpText = TextEditingController();
   var dropText = TextEditingController();
 
+  var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   onChanged() {}
   var labelStyle =
@@ -46,6 +47,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
             return Stack(
               children: <Widget>[
                 Scaffold(
+                  key: _scaffoldKey,
                   appBar: AppBar(
                     iconTheme: IconThemeData(color: Colors.white),
                     backgroundColor: Colors.black87,
@@ -346,7 +348,9 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                     ),
                   ),
                   floatingActionButton: FloatingActionButton.extended(
-                    onPressed:controller.upload,
+                    onPressed:(){
+                        upload();
+                    },
                     icon: Icon(
                       Icons.check_circle,
                       color: Colors.white,
@@ -379,6 +383,18 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
             );
           }),
     );
+  }
+
+  upload()async{
+    bool isUploaded;
+    await controller.upload().then((uploaded){isUploaded = uploaded;});
+    if(isUploaded){
+      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Uploaded Successfully")));
+    }
+    else{
+      _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Please Fill all the given fields")));
+
+    }
   }
 
 }

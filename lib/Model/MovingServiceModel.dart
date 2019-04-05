@@ -22,4 +22,9 @@ class MovingServiceModel{
     };
   }
 
+
+  notNull(){
+    return this.pickUpAddress==null&&this.dropAddress==null&&this.date==null&&this.surveyTime==null;
+  }
+
 }
