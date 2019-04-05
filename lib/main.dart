@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shyft_packers_and_movers/Widgets/ConstantWidgets.dart';
 import 'package:shyft_packers_and_movers/Widgets/HomePage.dart';
 import 'package:shyft_packers_and_movers/Widgets/PickDropWidget.dart';
 
@@ -56,15 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
       top: true,
       child: Scaffold(
-                appBar: AppBar(
-                  iconTheme: IconThemeData(color: Colors.white),
-          backgroundColor: Colors.black87,
-          elevation: 1.0,
-          centerTitle: true,
-          title: Text("SHYFT",style: TextStyle(color: Colors.white,letterSpacing: 2.5,fontWeight: FontWeight.bold),),
-
-                  actions: <Widget>[IconButton(icon: Icon(Icons.person_pin), onPressed: (){})],
-        ),
+                appBar: ConstantWidgets.appbarWithProfile,
 
       body: SafeArea(
           child: Container(

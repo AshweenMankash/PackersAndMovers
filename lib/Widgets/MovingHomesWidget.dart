@@ -142,7 +142,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                               onChanged: (drop){
                                                 controller.movingDetails.dropAddress=drop;
                                                 setState(() {
-
+                                                    print(controller.movingDetails.dropAddress);
                                                 });
                                               },
                                               decoration: InputDecoration(
@@ -201,6 +201,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                                 decoration: InputDecoration(
                                                     labelText: UiConstants.dateLabelText),
                                                 enabled: false,
+
                                               ),
                                             ),
                                           ),
@@ -387,7 +388,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
 
   upload()async{
     bool isUploaded;
-    await controller.upload().then((uploaded){isUploaded = uploaded;});
+    isUploaded = await controller.upload().then((upload)=>upload);
     if(isUploaded){
       _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Uploaded Successfully")));
     }

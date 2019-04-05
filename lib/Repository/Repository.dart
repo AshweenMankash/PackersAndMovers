@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shyft_packers_and_movers/Login/LoginFile.dart';
@@ -6,17 +7,35 @@ abstract class Database{
 }
 
 
-class FirebaseDatabase implements Database{
-  Login login = new Login();
+class FireBaseCloudFunctions{
+  FireBaseCloudFunctions.initialize (var data){
+    CloudFunctions.instance.call(functionName: "onInitialized",parameters:data);
+  }
+
+
+
+
+
+}
+
+
+class FireStoreDatabase implements Database{
+  Login login ;
   bool isLoggedIn;
-  isMovingOn (String uid){
-   CloudFunctions.instance.call(functionName: "isShyfting",parameters:{"uid":uid}).then((a){
-    print("hello this is $a");
-  });
-    }
+  var uid;
+  FireBaseCloudFunctions _fireBaseCloudFunctions;
 
+  checkIfShyftingIsOn(){
+    bool on;
 
-  FirebaseDatabase(){
+     Firestore.instance
+        .document("Users/$uid/")
+        .snapshots().listen(((d)=>d.exists?on=d.data["isShyfting"]:on=false));
+     print(on.toString()+"asdadasdasdads");
+    return on;
+  }
+  FireStoreDatabase(){
+    _fireBaseCloudFunctions = FireBaseCloudFunctions();
     isLoggedIn=false;
     login = Login();
     initialize();
@@ -32,11 +51,21 @@ class FirebaseDatabase implements Database{
           }
           else{
             isLoggedIn = true;
-            isMovingOn(u.uid);
+              this.uid = u.uid;
+            _fireBaseCloudFunctions.isMovingOn(uid);
           }
         });
       }
 
+
+
+
+
     }
+
+
+
+
+
 
 
