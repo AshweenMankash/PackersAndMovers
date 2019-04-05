@@ -32,12 +32,7 @@ class FireStoreDatabase implements Database {
   var uid;
   var movingData;
   checkIfShiftingIsOn() async {
-    Firestore.instance
-        .document("Users/$uid/")
-        .snapshots().listen(((data) {
-      isShiftingOn = data.exists ? data.data["isShyfting"] : false;
-      print(isShiftingOn);
-    }));
+
   }
 
   FireStoreDatabase() {
@@ -57,7 +52,9 @@ class FireStoreDatabase implements Database {
       else {
         isLoggedIn = true;
         this.uid = u.uid;
-      await checkIfShiftingIsOn();
+      isShiftingOn = Firestore.instance
+          .document("Users/$uid/")
+          .snapshots();
       }
     });
   }

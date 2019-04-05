@@ -7,7 +7,7 @@ import 'package:shyft_packers_and_movers/Repository/Repository.dart';
 import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
 
 class HomePageViewModel implements BLoc{
-  StreamController<bool> isMovingOn = new StreamController.broadcast();
+  var isMovingOn;
   StreamController<bool> isLoading = new StreamController.broadcast();
   HomePageModel homePageModel ;
   FireStoreDatabase _fireStoreDatabase;
@@ -21,7 +21,7 @@ class HomePageViewModel implements BLoc{
   }
 
 fetch(){
-     isMovingOn.add(_fireStoreDatabase.isShiftingOn);
+     isMovingOn=_fireStoreDatabase.isShiftingOn;
   }
 
 

@@ -35,12 +35,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
               );
             }
             else{
-              return StreamBuilder<bool>(
-                  initialData: false,
-                  stream: homePageViewModel.isMovingOn.stream,
+              return StreamBuilder<DocumentSnapshot>(
+                  stream: homePageViewModel.isMovingOn,
                   builder: (context, snapshot) {
                       print(snapshot.data);
-                      return !snapshot.data?Container(
+                      return snapshot.hasData?(!snapshot.data["isShyfting"])?Container(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -110,7 +109,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                 ))
                           ],
                         ),
-                      ):MovingHomeStatusWidget();
+                      ):MovingHomeStatusWidget():Container(
+                        child: CircularProgressIndicator(),
+                      );
                     }
               );
             }
