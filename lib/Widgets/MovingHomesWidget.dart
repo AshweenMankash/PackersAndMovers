@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shyft_packers_and_movers/BLoc/ShyftBloc.dart';
+import 'package:shyft_packers_and_movers/BlocProvider/LoginBLocProvider.dart';
 import 'package:shyft_packers_and_movers/Model/MovingServiceModel.dart';
 import 'package:shyft_packers_and_movers/Model/UiConstants.dart';
-import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
-import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
-import 'package:shyft_packers_and_movers/ViewModel/MovingServiceViewModel.dart';
+import 'package:shyft_packers_and_movers/main.dart';
 
 class MovingHomesWidget extends StatefulWidget {
   @override
@@ -14,19 +13,24 @@ class MovingHomesWidget extends StatefulWidget {
 class _MovingHomesWidgetState extends State<MovingHomesWidget> {
   var progress = 0;
   MovingServiceModel model = new MovingServiceModel();
-  MovingServiceViewModel controller = new MovingServiceViewModel();
+  ShyftBLoc _bloc ;
+
+@override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _bloc = ShyftBLocProvider.of(context);
+  }
 
   @override
   void initState() {
     super.initState();
-    controller.loading.add(false);
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    controller.dispose();
   }
 
   var pickUpText = TextEditingController();
@@ -42,7 +46,8 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: StreamBuilder<bool>(
-          stream: controller.loading.stream,
+        initialData: true,
+          stream: _bloc.movingServiceBloc.isLoading,
           builder: (context, snapshot) {
             return Stack(
               children: <Widget>[
@@ -62,6 +67,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                     ),
                   ),
                   resizeToAvoidBottomInset: false,
+                  resizeToAvoidBottomPadding: false,
                   body: Container(
                     height: MediaQuery
                         .of(context)
@@ -103,19 +109,19 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
 
                                           Padding(
                                             padding: const EdgeInsets.only(left:15.0,right:15.0),
-                                            child: TextField(
-
-                                              onChanged: (pick){
-                                                controller.movingDetails.pickUpAddress=pick;
-                                                setState(() {
-
-                                                });
-                                              },
-                                              decoration: InputDecoration(
-                                                  labelText: UiConstants.pickUpAddress,
-                                                  labelStyle: labelStyle,
-                                                  helperText: UiConstants.pickUpAddressHint),
-                                              controller: this.pickUpText,
+                                            child: StreamBuilder(
+                                              stream: _bloc.movingServiceBloc.getPickUp,
+                                              builder: (context, snapshot) {
+                                                return TextField(
+                                                  onChanged: _bloc.movingServiceBloc.setPickUp,
+                                                  decoration: InputDecoration(
+                                                      labelText: UiConstants.pickUpAddress,
+                                                      labelStyle: labelStyle,
+                                                      errorText: snapshot.error,
+                                                      helperText: UiConstants.pickUpAddressHint),
+                                                  controller: this.pickUpText,
+                                                );
+                                              }
                                             ),
                                           ),
                                         ],
@@ -138,110 +144,113 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
 
                                           Padding(
                                             padding: const EdgeInsets.only(left:15.0,right:15.0),
-                                            child: TextField(
-                                              onChanged: (drop){
-                                                controller.movingDetails.dropAddress=drop;
-                                                setState(() {
-                                                    print(controller.movingDetails.dropAddress);
-                                                });
-                                              },
-                                              decoration: InputDecoration(
-                                                  labelText: UiConstants.dropAddress,
-                                                  labelStyle: labelStyle,
-                                                  helperText: UiConstants.dropAddressHint),
-                                              controller: this.dropText,
+                                            child: StreamBuilder(
+                                              stream: _bloc.movingServiceBloc.getDrop,
+                                              builder: (context, snapshot) {
+                                                return TextField(
+                                                  onChanged: _bloc.movingServiceBloc.setDrop,
+                                                  decoration: InputDecoration(
+                                                      labelText: UiConstants.dropAddress,
+                                                      labelStyle: labelStyle,
+                                                      helperText: UiConstants.dropAddressHint,
+                                                  errorText: snapshot.error),
+                                                  controller: this.dropText,
+                                                );
+                                              }
                                             ),
                                           ),
                                         ],
                                       ))
                                 ],
                               ),
-                              InkWell(
-                                onTap: () async {
-                                  controller.movingDetails?.date = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime.now()
-                                          .subtract(Duration(seconds: 1)),
-                                      lastDate: DateTime.now()
-                                          .add(Duration(days: 31)));
-                                  print(controller.movingDetails.date.toIso8601String());
-                                        setState(() {
-
-                                        });
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(20.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding:
-                                        const EdgeInsets.only(left: 10.0),
-                                        child: Text(
-                                          UiConstants.dateHeading,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black54),
-                                        ),
-                                      ),
-                                      Flex(
+                              StreamBuilder(
+                                stream: _bloc.movingServiceBloc.getDate,
+                                builder: (context, snapshot) {
+                                  return InkWell(
+                                    onTap: () async {
+                                      var date = await showDatePicker(
+                                          context: context,
+                                          initialDate: snapshot.data,
+                                          firstDate: snapshot.data
+                                              .subtract(Duration(seconds: 1)),
+                                          lastDate: snapshot.data
+                                              .add(Duration(days: 31)));
+                                      _bloc.movingServiceBloc.setDate(date);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(20.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Expanded(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20.0),
-                                              child: TextField(
-                                                controller:
-                                                TextEditingController(
-                                                    text: controller.movingDetails.date?.day
-                                                        .toString() ??
-                                                        ""),
-                                                decoration: InputDecoration(
-                                                    labelText: UiConstants.dateLabelText),
-                                                enabled: false,
+                                          Padding(
+                                            padding:
+                                            const EdgeInsets.only(left: 10.0),
+                                            child: Text(
+                                              UiConstants.dateHeading,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black54),
+                                            ),
+                                          ),
+                                          Flex(
+                                            children: <Widget>[
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 20.0),
+                                                  child: TextField(
+                                                    controller:
+                                                    TextEditingController(
+                                                        text: snapshot.data?.day
+                                                            .toString() ??
+                                                            ""),
+                                                    decoration: InputDecoration(
+                                                        labelText: UiConstants.dateLabelText),
+                                                    enabled: false,
 
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20.0),
-                                              child: TextField(
-                                                  controller:
-                                                  TextEditingController(
-                                                      text: controller.movingDetails.date?.month
-                                                          .toString() ??
-                                                          ""),
-                                                  decoration: InputDecoration(
-                                                      labelText: UiConstants.monthLabelText),
-                                                  enabled: false),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20.0),
-                                              child: TextField(
-                                                  controller:
-                                                  TextEditingController(
-                                                      text: controller.movingDetails?.date
-                                                          ?.year
-                                                          ?.toString() ??
-                                                          ""),
-                                                  decoration: InputDecoration(
-                                                      labelText: UiConstants.yearLabelText),
-                                                  enabled: false),
-                                            ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 20.0),
+                                                  child: TextField(
+                                                      controller:
+                                                      TextEditingController(
+                                                          text: snapshot.data?.month
+                                                              .toString() ??
+                                                              ""),
+                                                      decoration: InputDecoration(
+                                                          labelText: UiConstants.monthLabelText),
+                                                      enabled: false),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 20.0),
+                                                  child: TextField(
+                                                      controller:
+                                                      TextEditingController(
+                                                          text: snapshot.data
+                                                              ?.year
+                                                              ?.toString() ??
+                                                              ""),
+                                                      decoration: InputDecoration(
+                                                          labelText: UiConstants.yearLabelText),
+                                                      enabled: false),
+                                                ),
+                                              ),
+                                            ],
+                                            direction: Axis.horizontal,
                                           ),
                                         ],
-                                        direction: Axis.horizontal,
                                       ),
-                                    ],
-                                  ),
-                                ),
+                                    ),
+                                  );
+                                }
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -263,76 +272,79 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                                       mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
-                                        FlatButton(
-                                          onPressed: () {
-                                            controller
-                                                .movingDetails
-                                                .surveyTime = UiConstants.surveyTimeOptions[0];
-                                            setState(() {});
-                                          },
-                                          child: Text(UiConstants.surveyTimeOptions[0],
-                                            style: TextStyle(
-                                                color:
-                                                controller.movingDetails
-                                                    ?.surveyTime ==
-                                                    UiConstants.surveyTimeOptions[0]
-                                                    ? Colors.white
-                                                    : Colors.black),),
-                                          color: controller.movingDetails?.surveyTime ==
-                                              UiConstants.surveyTimeOptions[0]
-                                              ? Colors.blue
-                                              : Colors.transparent,
-                                          shape: StadiumBorder(
-                                              side:BorderSide(
-                                                  color: Colors.blue,
-                                                  width: 2.0)),
-                                        ),
-                                        FlatButton(
-                                          onPressed: () {
-                                            controller.movingDetails?.surveyTime = UiConstants.surveyTimeOptions[1];
-                                            setState(() {});
-                                          },
-                                          color: controller.movingDetails?.surveyTime ==
-                                              UiConstants.surveyTimeOptions[1]
-                                        ? Colors.blue
-                                            : Colors.transparent,
-                                          child: Text(
-                                            UiConstants.surveyTimeOptions[1],
-                                            style: TextStyle(
-                                                color:
-                                                controller.movingDetails
-                                                    ?.surveyTime ==
+                                        StreamBuilder(
+                                          stream: _bloc.movingServiceBloc.getSurveyTime,
+                                          builder: (context, snapshot) {
+                                            return FlatButton(
+                                              onPressed: () {
+                                                _bloc.movingServiceBloc.setSurveyTime(UiConstants.surveyTimeOptions[0]);
+                                              },
+                                              child: Text(UiConstants.surveyTimeOptions[0],
+                                                style: TextStyle(
+                                                    color:
+                                                    snapshot.data ==
+                                                        UiConstants.surveyTimeOptions[0]
+                                                        ? Colors.white
+                                                        : Colors.black),),
+                                              color: snapshot.data ==
+                                                  UiConstants.surveyTimeOptions[0]
+                                                  ? Colors.blue
+                                                  : Colors.transparent,
+                                              shape: StadiumBorder(
+                                                  side:BorderSide(
+                                                      color: Colors.blue,
+                                                      width: 2.0)),
+                                            );
+                                          }
+                                        ),StreamBuilder(
+                                            stream: _bloc.movingServiceBloc.getSurveyTime,
+                                            builder: (context, snapshot) {
+                                              return FlatButton(
+                                                onPressed: () {
+                                                  _bloc.movingServiceBloc.setSurveyTime(UiConstants.surveyTimeOptions[1]);
+                                                },
+                                                child: Text(UiConstants.surveyTimeOptions[1],
+                                                  style: TextStyle(
+                                                      color:
+                                                      snapshot.data ==
+                                                          UiConstants.surveyTimeOptions[1]
+                                                          ? Colors.white
+                                                          : Colors.black),),
+                                                color: snapshot.data ==
                                                     UiConstants.surveyTimeOptions[1]
-                                                    ? Colors.white
-                                                    : Colors.black),
-                                          ),
-                                          shape: StadiumBorder(
-                                              side: BorderSide(
-                                                  color: Colors.blue,
-                                                  width: 2.0)),
-                                        ),
-                                        FlatButton(
-                                          onPressed: () {
-                                            controller.movingDetails?.surveyTime = UiConstants.surveyTimeOptions[2];
-                                            setState(() {});
-                                          },
-                                          color: controller.movingDetails?.surveyTime ==
-                                              UiConstants.surveyTimeOptions[2]
-                                              ? Colors.blue
-                                              : Colors.transparent,
-                                          child: Text(UiConstants.surveyTimeOptions[2],
-                                            style: TextStyle(
-                                                color:
-                                                controller.movingDetails
-                                                    ?.surveyTime ==
+                                                    ? Colors.blue
+                                                    : Colors.transparent,
+                                                shape: StadiumBorder(
+                                                    side:BorderSide(
+                                                        color: Colors.blue,
+                                                        width: 2.0)),
+                                              );
+                                            }
+                                        ),StreamBuilder(
+                                            stream: _bloc.movingServiceBloc.getSurveyTime,
+                                            builder: (context, snapshot) {
+                                              return FlatButton(
+                                                onPressed: () {
+                                                  _bloc.movingServiceBloc.setSurveyTime(UiConstants.surveyTimeOptions[2]);
+                                                },
+                                                child: Text(UiConstants.surveyTimeOptions[2],
+                                                  style: TextStyle(
+                                                      color:
+                                                      snapshot.data ==
+                                                          UiConstants.surveyTimeOptions[2]
+                                                          ? Colors.white
+                                                          : Colors.black),),
+                                                color: snapshot.data ==
                                                     UiConstants.surveyTimeOptions[2]
-                                                    ? Colors.white
-                                                    : Colors.black),),
-                                          shape: StadiumBorder(
-                                              side: BorderSide(
-                                                  color: Colors.blue,
-                                                  width: 2.0)),
-                                        )
+                                                    ? Colors.blue
+                                                    : Colors.transparent,
+                                                shape: StadiumBorder(
+                                                    side:BorderSide(
+                                                        color: Colors.blue,
+                                                        width: 2.0)),
+                                              );
+                                            }
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -350,6 +362,7 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
                   ),
                   floatingActionButton: FloatingActionButton.extended(
                     onPressed:(){
+
                         upload();
                     },
                     icon: Icon(
@@ -388,9 +401,10 @@ class _MovingHomesWidgetState extends State<MovingHomesWidget> {
 
   upload()async{
     bool isUploaded;
-    isUploaded = await controller.upload().then((upload)=>upload);
+    isUploaded = await _bloc.movingServiceBloc.requestMovers();
     if(isUploaded){
       _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Uploaded Successfully")));
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_)=>MyHomePage()), (Route<dynamic> route)=> false);
     }
     else{
       _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Please Fill all the given fields")));
