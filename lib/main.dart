@@ -1,10 +1,10 @@
-import 'dart:async';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shyft_packers_and_movers/BLoc/ShyftBloc.dart';
+import 'package:shyft_packers_and_movers/BlocProvider/LoginBLocProvider.dart';
+import 'package:shyft_packers_and_movers/Widgets/ConstantWidgets.dart';
 import 'package:shyft_packers_and_movers/Widgets/HomePage.dart';
-import 'package:shyft_packers_and_movers/Widgets/PickDropWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,22 +16,15 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-    return MaterialApp(
-      title: 'shyft',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.orange,
+    return ShyftBLocProvider(
+      child: MaterialApp(
+        title: 'shyft',
+        theme: ThemeData(
+          primarySwatch: Colors.orange,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: MyHomePage(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
     );
   }
 }
@@ -42,39 +35,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  ShyftBLoc _bloc;
 
-  Completer<GoogleMapController> _controller = Completer();
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _bloc = ShyftBLocProvider.of(context);
+  }
 
-  static const _center = const LatLng(50.0, 120.0);
-
-  void _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _bloc.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      top: true,
-      child: Scaffold(
-                appBar: AppBar(
-                  iconTheme: IconThemeData(color: Colors.white),
-          backgroundColor: Colors.black87,
-          elevation: 1.0,
-          centerTitle: true,
-          title: Text("SHYFT",style: TextStyle(color: Colors.white,letterSpacing: 2.5,fontWeight: FontWeight.bold),),
+    return StreamBuilder<FirebaseUser>(
+        stream: _bloc.loginBloc.getAuthState,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data.uid != null) {
+              return Scaffold(
+                appBar: ConstantWidgets.appbarWithProfile(
+                    SignOut: _bloc.loginBloc.signOut),
+                body: SafeArea(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    child: HomePageWidget(),
+                  ),
+                ),
+                resizeToAvoidBottomPadding: false,
+              );
+            } else {
+              _bloc.loginBloc.signIn();
+              return loadingWidget();
+            }
+          } else {
+            _bloc.loginBloc.signIn();
+            return loadingWidget();
+          }
+        });
+  }
 
-                  actions: <Widget>[IconButton(icon: Icon(Icons.person_pin), onPressed: (){})],
-        ),
-
+  Widget loadingWidget() {
+    return Scaffold(
       body: SafeArea(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: HomePageWidget(),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(),
+              ),
+              Text("Logging In")
+            ],
           ),
         ),
-        
-        resizeToAvoidBottomPadding: false,
       ),
     );
   }
