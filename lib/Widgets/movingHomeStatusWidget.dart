@@ -35,21 +35,29 @@ class _MovingHomeStatusWidgetState extends State<MovingHomeStatusWidget> {
               : Container(
                   padding: EdgeInsets.all(20.0),
                   child: StreamBuilder<QuerySnapshot>(
-                    stream: _shyftBLoc.movingHomeStatusBLoc.currentMovingData,
-                    builder: (context, movingData) {
-                      return movingData.hasData?Material(
-                        borderRadius: BorderRadius.circular(20.0),
-                        elevation: 5.0,
-                        child: Container(
-                          padding: EdgeInsets.all(100.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[Text(movingData.data.documents.length>=1?movingData.data.documents[0]["pickUpAddress"]:"")],
-                          ),
-                        ),
-                      ):Center(child: LinearProgressIndicator(),);
-                    }
-                  ),
+                      stream: _shyftBLoc.movingHomeStatusBLoc.currentMovingData,
+                      builder: (context, movingData) {
+                        return movingData.hasData
+                            ? Material(
+                                borderRadius: BorderRadius.circular(20.0),
+                                elevation: 5.0,
+                                child: Container(
+                                  padding: EdgeInsets.all(100.0),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Text(movingData.data.documents.length >= 1
+                                          ? movingData.data.documents[0]
+                                              ["pickUpAddress"]
+                                          : "")
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Center(
+                                child: LinearProgressIndicator(),
+                              );
+                      }),
                 );
         });
   }
